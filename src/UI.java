@@ -17,8 +17,8 @@ public class UI {
             correct = scanner.nextInt();
             if(correct == 1){
                 queryProcessor = new QueryProcessor(path);
-                this.fields = queryProcessor.getFieldNames();
-                this.types = queryProcessor.getTypeNames();
+                //this.fields = queryProcessor.getFieldNames();
+                //this.types = queryProcessor.getTypeNames();
                 this.fieldNumber = fields.length;
                 this.queryTypeChoice();
             }else{

@@ -3,13 +3,11 @@ import java.util.Date;
 
 public class QueryProcessor {
     private Table dataTable;
-    private String[][] data;
     private SimpleDateFormat format;
 
     public QueryProcessor(String path){
         DataLoader dataLoader = new DataLoader(path);
         this.dataTable = dataLoader.getDataWithTable();
-        this.data = dataLoader.getData();
         this.format = new SimpleDateFormat("dd/MM/yyyy");
     }
 
@@ -45,8 +43,6 @@ public class QueryProcessor {
     }
 
     private String compareIntegers(String comparison, int toCompare, int column){
-        int counter = 0;
-        int[] matchingRows = new int[this.data.length];
         switch (comparison){
             case "=":
 
@@ -63,99 +59,62 @@ public class QueryProcessor {
             case "<=":
 
                 break;
-        }
-        return this.getResults(matchingRows, counter);
-    }
-
-    private String compareDoubles(String comparison, double toCompare, int column){
-        int counter = 0;
-        int[] matchingRows = new int[this.data.length];
-        switch (comparison){
-            case "=":
-
-                break;
-            case ">":
-
-                break;
-            case "<":
-
-                break;
-            case ">=":
-
-                break;
-            case "<=":
-
-                break;
-        }
-        return this.getResults(matchingRows, counter);
-    }
-
-    private String compareDates(String comparison, Date toCompare, int column){
-        int counter = 0;
-        int[] matchingRows = new int[this.data.length];
-        switch (comparison){
-            case "=":
-
-                break;
-            case ">":
-
-                break;
-            case "<":
-
-                break;
-            case ">=":
-
-                break;
-            case "<=":
-
-                break;
-        }
-        return this.getResults(matchingRows, counter);
-    }
-
-    private String compareStrings(String toCompare, int column){
-        int counter = 0;
-        int[] matchingRows = new int[this.data.length];
-        for(int i = 2; i < this.data.length; i++){
-            if(toCompare.equals(this.data[i][column])){
-                matchingRows[counter] = i;
-                counter++;
-            }
         }
         return "";
     }
 
-    private String compareBooleans(boolean toCompare, int column){
-        int counter = 0;
-        int[] matchingRows = new int[this.data.length];
-        for(int i = 2; i < this.data.length; i++){
-            if(toCompare == Boolean.parseBoolean(this.data[i][column])){
-                matchingRows[counter] = i;
-                counter++;
-            }
+    private String compareDoubles(String comparison, double toCompare, int column){
+        switch (comparison){
+            case "=":
+
+                break;
+            case ">":
+
+                break;
+            case "<":
+
+                break;
+            case ">=":
+
+                break;
+            case "<=":
+
+                break;
         }
+        return "";
+    }
+
+    private String compareDates(String comparison, Date toCompare, int column){
+        switch (comparison){
+            case "=":
+
+                break;
+            case ">":
+
+                break;
+            case "<":
+
+                break;
+            case ">=":
+
+                break;
+            case "<=":
+
+                break;
+        }
+        return "";
+    }
+
+    private String compareStrings(String toCompare, int column){
+        return "";
+    }
+
+    private String compareBooleans(boolean toCompare, int column){
         return "";
     }
 
     private String getResults(int[] matchingRows, int numberOfMatchingRows){
         String result = "";
-        for(int i = 0; i < numberOfMatchingRows; i++){
-            for(int j = 0; j < this.data[i].length; j++){
-                result += this.data[matchingRows[i]][j] + " ";
-            }
-            result += "\n";
-        }
-        if(result.equals(""))
-            result = "No matches were found";
-
         return result;
-    }
-
-    public String[] getFieldNames(){
-        return this.data[0];
-    }
-
-    public String[] getTypeNames(){
-        return this.data[1];
     }
 }
