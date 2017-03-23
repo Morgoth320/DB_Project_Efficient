@@ -119,6 +119,10 @@ public class Table {
         return s;
     }
 
+    public Map<String, String> getKeyMap(){
+        return keyMap;
+    }
+
     public static void main(String... args){
         Table t = new Table();
         t.createIndex("names", "String");

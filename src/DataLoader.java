@@ -23,19 +23,6 @@ public class DataLoader {
         }
     }
 
-    public String[][] getData(){
-        String[][] data = new String[this.getRowNumber()][this.getColumnNumber()];
-        try {
-            for (int i = 0; i < data.length; i++) {
-                data[i] = reader.readLine().split(regex);
-            }
-            reader.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return data;
-    }
-
     public Table getDataWithTable(){
         Table data = new Table();
         String[][] tempData = new String[this.getRowNumber()][this.getColumnNumber()];
