@@ -57,10 +57,23 @@ public class QueryProcessor {
         }else {
             switch (query.getLogicalOperator()) {
                 case AND:
-
+                    for (int i = 0; i < firstResultValues.length; ++i) {
+                        for (int j = 0; j < secondResultValues.length; ++j) {
+                            if (firstResultValues[i].equals(secondResultValues[j]) && !finalResult.contains(firstResultValues[i])) {
+                                finalResult += firstResultValues[i] + "\n";
+                            }
+                        }
+                    }
                     break;
                 case OR:
-
+                    for(int i = 0; i < firstResultValues.length; ++i){
+                        finalResult += firstResultValues[i] + "\n";
+                    }
+                    for(int j = 0; j < secondResultValues.length; ++j){
+                        if(!finalResult.contains(secondResultValues[j])){
+                            finalResult += secondResultValues[j] + "\n";
+                        }
+                    }
                     break;
             }
         }
