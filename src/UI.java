@@ -29,24 +29,27 @@ public class UI {
     }
 
     public void queryTypeChoice(){
-        printFields();
-        System.out.println("Enter the type of query to be made\n1- Simple Query\n2- Complex Query\n3- Exit");
-        int choice = Integer.parseInt(this.validateInput("[1-3]"));
-        switch (choice) {
-            case 1:
-                Query query = makeSimpleQuery();
-                System.out.println();
-                System.out.println(this.queryProcessor.processSimpleQuery(query));
-                System.out.println();
-                break;
-            case 2:
-                ComplexQuery complexQuery = makeComplexQuery();
-                System.out.println();
-                System.out.println(this.queryProcessor.processComplexQuery(complexQuery));
-                System.out.println();
-                break;
-            default:
-                break;
+        int choice = 0;
+        while(choice < 3) {
+            printFields();
+            System.out.println("Enter the type of query to be made\n1- Simple Query\n2- Complex Query\n3- Exit");
+            choice = Integer.parseInt(this.validateInput("[1-3]"));
+            switch (choice) {
+                case 1:
+                    Query query = makeSimpleQuery();
+                    System.out.println();
+                    System.out.println(this.queryProcessor.processSimpleQuery(query));
+                    System.out.println();
+                    break;
+                case 2:
+                    ComplexQuery complexQuery = makeComplexQuery();
+                    System.out.println();
+                    System.out.println(this.queryProcessor.processComplexQuery(complexQuery));
+                    System.out.println();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
