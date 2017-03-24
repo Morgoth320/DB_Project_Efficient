@@ -15,7 +15,7 @@ public class UI {
             Scanner scanner = new Scanner(System.in);
             path = scanner.nextLine();
             System.out.println(path + "\nIs this path correct?\n1- Yes\n2- No");
-            int correct = Integer.parseInt(this.validateInput("[1-2]"));
+            int correct = Integer.parseInt(this.validateInput("([1-2]{1})"));
             if(correct == 1){
                 queryProcessor = new QueryProcessor(path);
                 this.fields = queryProcessor.getPublicFieldNames();
@@ -33,7 +33,7 @@ public class UI {
         while(choice < 3) {
             printFields();
             System.out.println("Enter the type of query to be made\n1- Simple Query\n2- Complex Query\n3- Exit");
-            choice = Integer.parseInt(this.validateInput("[1-3]"));
+            choice = Integer.parseInt(this.validateInput("([1-3]{1})"));
             switch (choice) {
                 case 1:
                     Query query = makeSimpleQuery();
@@ -57,7 +57,7 @@ public class UI {
         String operation = "";
         this.printFields();
         System.out.println("Choose field to make the comparison");
-        int choice = Integer.parseInt(this.validateInput("[1-" + fieldNumber+ "]"));
+        int choice = Integer.parseInt(this.validateInput("([1-" + fieldNumber+ "]{1})"));
         String fieldType = types[choice - 1];
         switch (fieldType) {
             case "String":
@@ -84,7 +84,7 @@ public class UI {
         Query firstQuery = this.makeSimpleQuery();
         LogicalOperator logicalOperator = null;
         System.out.println("Select the logical operator to bind the queries\n1- And\n2- Or");
-        int operator = Integer.parseInt(this.validateInput("[1-2]"));
+        int operator = Integer.parseInt(this.validateInput("([1-2]{1})"));
         switch (operator) {
             case 1:
                 logicalOperator = LogicalOperator.AND;
@@ -101,7 +101,7 @@ public class UI {
     public String getOperation(){
         String operation = "";
         System.out.println("1- Equals (=)\n2- Greater than (>)\n3- Lesser than (<)\n4- Greater of equal than (>=)\n5- Lesser or equal than (<=)");
-        int choice = Integer.parseInt(this.validateInput("[1-5]"));
+        int choice = Integer.parseInt(this.validateInput("([1-5]{1})"));
         switch (choice) {
             case 1:
                 operation = "=";
