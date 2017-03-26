@@ -16,9 +16,23 @@ public class QueryProcessor {
         this.typeNames = this.getTypeNames();
     }
 
+    /**
+     * Calls the method that will process a simple query
+     * @param query Query Data Type built with the user's requirements
+     * @return String that contains the query's answer
+     */
+
     public String processSimpleQuery(Query query){
         return this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue());
     }
+
+    /**
+     * Calls all the methods that make the comparisons between the data file and the user's input
+     * @param comparisonColumn int containing the datafile's column to be compared
+     * @param operation String containing the operation (<, >, <=, >=< =)
+     * @param operationValue String with the value to be compared
+     * @return String containing the query's result
+     */
 
     private String processSimpleQuery(int comparisonColumn, String operation, String operationValue){
         String queryResult = "";
@@ -45,6 +59,12 @@ public class QueryProcessor {
         }
         return queryResult;
     }
+
+    /**
+     * Generates the complex query's answer, using two simple queries and a logical operator
+     * @param query ComplexQuery Data Tyoe containing the user's requirements
+     * @return String with a complex query's answer
+     */
 
     public String processComplexQuery(ComplexQuery query){
         String finalResult = "";

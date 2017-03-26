@@ -8,6 +8,11 @@ public class UI {
     String[] types;
     int fieldNumber;
 
+    /**
+     * It starts the program, asks the file path and calls the
+     * methods required to process the query, if the path is right
+     */
+
     public void initialize(){
         String path = "";
         while(path.equals("")){
@@ -27,6 +32,11 @@ public class UI {
             }
         }
     }
+
+    /**
+     * Asks the user what kind of query they want to do and calls the methods required
+     * to process the queries depending on the user's choice, then shows the result
+     */
 
     public void queryTypeChoice(){
         int choice = 0;
@@ -52,6 +62,12 @@ public class UI {
             }
         }
     }
+
+    /**
+     * Asks the user wich field they want to use to make the query, calls the method that asks for the operation
+     * and then wich value they want to compare, it also builds a Query type object with the information
+     *  @return Query Data Type
+     */
 
     public Query makeSimpleQuery(){
         String operation = "";
@@ -80,6 +96,13 @@ public class UI {
         return new Query(operation, parameter, choice - 1);
     }
 
+    /**
+     * Porcess a simple query calling the makeSimpleQuery method, also asks the user what kind
+     * of logical operator they wnat to use to make the complex query, and then process another simple query.
+     * Builds a ComplexQuery type object with the information inserted by the user
+     * @return ComplexQuery Data Type
+     */
+
     public ComplexQuery makeComplexQuery(){
         Query firstQuery = this.makeSimpleQuery();
         LogicalOperator logicalOperator = null;
@@ -97,6 +120,11 @@ public class UI {
         Query secondQuery = this.makeSimpleQuery();
         return new ComplexQuery(firstQuery, secondQuery, logicalOperator);
     }
+
+    /**
+     * Asks the user the operation type (<, >, =, <=, >=)
+     * @return String, user's choice
+     */
 
     public String getOperation(){
         String operation = "";
@@ -122,6 +150,13 @@ public class UI {
         return operation;
     }
 
+    /**
+     * Doesn't allow the user to enter wrong input, shows a message when it happens, let the user try again
+     * It is used by all the methods that asks the user for information.
+     * @param regex String that indicates wich input the user can make
+     * @return String that contains the user's answer after it passes the validation process
+     */
+
     private String validateInput(String regex){
         Scanner scanner = new Scanner(System.in);
         Pattern pattern = Pattern.compile(regex);
@@ -134,6 +169,10 @@ public class UI {
         }
         return strChoice;
     }
+
+    /**
+     * Shows the fields the user can use to make the query
+     */
 
     public void printFields(){
         System.out.println("Fields:");
