@@ -4,14 +4,6 @@ public class ComplexQuery extends Query {
     private int secondComparisonColumn;
     private LogicalOperator logicalOperator;
 
-    public ComplexQuery(String operation, String operationValue, int comparisonColumn, String secondOperation, String secondOperationValue, LogicalOperator logicalOperator, int secondComparisonColumn){
-        super(operation, operationValue, comparisonColumn);
-        this.secondOperation = secondOperation;
-        this.secondOperationValue = secondOperationValue;
-        this.logicalOperator = logicalOperator;
-        this.secondComparisonColumn = secondComparisonColumn;
-    }
-
     public ComplexQuery(Query firstQuery, Query secondQuery, LogicalOperator logicalOperator){
         super(firstQuery.getOperation(), firstQuery.getOperationValue(), firstQuery.getComparisonColumn());
         this.secondOperation = secondQuery.getOperation();
