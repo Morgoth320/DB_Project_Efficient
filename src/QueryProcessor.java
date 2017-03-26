@@ -21,7 +21,6 @@ public class QueryProcessor {
      * @param query Query Data Type built with the user's requirements
      * @return String that contains the query's answer
      */
-
     public String processSimpleQuery(Query query){
         return this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue());
     }
@@ -33,7 +32,6 @@ public class QueryProcessor {
      * @param operationValue String with the value to be compared
      * @return String containing the query's result
      */
-
     private String processSimpleQuery(int comparisonColumn, String operation, String operationValue){
         String queryResult = "";
         switch(typeNames[comparisonColumn]){
@@ -65,7 +63,6 @@ public class QueryProcessor {
      * @param query ComplexQuery Data Tyoe containing the user's requirements
      * @return String with a complex query's answer
      */
-
     public String processComplexQuery(ComplexQuery query){
         String finalResult = "";
         String firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue());

@@ -13,26 +13,23 @@ public class Query {
      * Returns the query's operation
      * @return String
      */
-
     public String getOperation() {
-        return operation;
+        return this.operation;
     }
 
     /**
      * Returns the value to be compared
      * @return String
      */
-
     public String getOperationValue() {
-        return operationValue;
+        return this.operationValue;
     }
 
     /**
      * Returns the data file's column to be compared
      * @return int
      */
-
     public int getComparisonColumn() {
-        return comparisonColumn;
+        return this.comparisonColumn;
     }
 }
