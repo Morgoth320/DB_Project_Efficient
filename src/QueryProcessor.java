@@ -83,19 +83,8 @@ public class QueryProcessor {
         String finalResult = "";
         String firstResult = "";
         String secondResult = "";
-        if(!query.getOperation().equals("range"))
-            firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue(), "");
-
-        else
-            firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getLowerLimit(), query.getUpperLimit());
-
-        if(!query.getSecondOperation().equals("range"))
-            secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
-
-        else
-            secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
-
-
+        firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getLowerLimit(), query.getUpperLimit());
+        secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
         String[] firstResultValues = firstResult.split("\n");
         String[] secondResultValues = secondResult.split("\n");
         if(firstResult.equals("No matches were found") && secondResult.equals("No matches were found")) {
@@ -199,8 +188,9 @@ public class QueryProcessor {
     private String compareDoubles(String comparison, double toCompare, int column, double otherCompare){
         String result = "";
         Set<Double> keySet = dataTable.getKeys(fieldNames[column]);
-        double currentKey = 0;
+
         Iterator<Double> keyIterator = keySet.iterator();
+        double currentKey = 0;
         switch (comparison){
             case "=":
                 result = this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare));

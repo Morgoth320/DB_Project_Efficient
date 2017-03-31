@@ -14,23 +14,23 @@ public class ComplexQuery extends Query {
 
     /**
      * Returns the second query's operation
-     * @return String
+     * @return the second query's operation
      */
     public String getSecondOperation() {
         return this.secondOperation;
     }
 
     /**
-     * Returns the second simple query's value
-     * @return String
+     * Returns the second query's value
+     * @return the second query's value
      */
     public String getSecondOperationValue() {
         return this.secondOperationValue;
     }
 
     /**
-     * Returns the logical operator to e used
-     * @return Tipo LogicalOperator
+     * Returns the logical operator to be used
+     * @return the logical operator to be used
      */
     public LogicalOperator getLogicalOperator(){
         return this.logicalOperator;
@@ -38,7 +38,7 @@ public class ComplexQuery extends Query {
 
     /**
      * Returns the data file's column to be compared in the second simple query
-     * @return int
+     * @return the data file's column to be compared in the second simple query
      */
     public int getSecondComparisonColumn() {
         return this.secondComparisonColumn;
