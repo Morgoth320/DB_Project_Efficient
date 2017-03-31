@@ -2,6 +2,8 @@ public class Query {
     private String operation;
     private String operationValue;
     private int comparisonColumn;
+    private String lowerLimit;
+    private String upperLimit;
 
     public Query(String operation, String operationValue, int comparisonColumn){
         this.operation = operation;
@@ -9,9 +11,16 @@ public class Query {
         this.comparisonColumn = comparisonColumn;
     }
 
+    public Query(String operation, String lowerLimit, int comparisonColumn, String upperLimit){
+        this.operation = operation;
+        this.lowerLimit = lowerLimit;
+        this.upperLimit = upperLimit;
+        this.comparisonColumn = comparisonColumn;
+    }
+
     /**
      * Returns the query's operation
-     * @return String
+     * @return the query's operation
      */
     public String getOperation() {
         return this.operation;
@@ -19,7 +28,7 @@ public class Query {
 
     /**
      * Returns the value to be compared
-     * @return String
+     * @return the value to be compared
      */
     public String getOperationValue() {
         return this.operationValue;
@@ -27,9 +36,25 @@ public class Query {
 
     /**
      * Returns the data file's column to be compared
-     * @return int
+     * @return the data file's column to be compared
      */
     public int getComparisonColumn() {
         return this.comparisonColumn;
+    }
+
+    /**
+     * Returns the lower limit if the comparison is a range
+     * @return the lower limit if the comparison is a range
+     */
+    public String getLowerLimit() {
+        return lowerLimit;
+    }
+
+    /**
+     * Returns the upper limit if the comparison is a range
+     * @return the upper limit if the comparison is a range
+     */
+    public String getUpperLimit() {
+        return upperLimit;
     }
 }

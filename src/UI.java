@@ -73,9 +73,15 @@ public class UI {
         String operation = "";
         this.printFields();
         System.out.println("Choose field to make the comparison");
-        int choice = Integer.parseInt(this.validateInput("([1-" + fieldNumber+ "]{1})"));
+        int choice = this.fieldNumber + 1;
+        while(choice > this.fieldNumber){
+            choice = Integer.parseInt(this.validateInput("^[1-9]+$"));
+        }
         String fieldType = types[choice - 1];
         String parameter = "";
+        String lowerLimit = "";
+        String upperLimit = "";
+
         switch (fieldType) {
             case "String":
                 System.out.println("The only available operation for " + fields[choice - 1] + " is equality");
@@ -94,27 +100,52 @@ public class UI {
             case "int":
                 System.out.println("Available operations for " + fields[choice - 1] + " :");
                 operation = this.getOperation();
-                System.out.println("Chose the value to be compared");
-                parameter = this.validateInput("[0-9]+");
+                if(operation.equals("range")){
+                    System.out.println("Set the range's lower limit");
+                    lowerLimit = this.validateInput("^[0-9]+$");
+                    System.out.println("Set the range's upper limit");
+                    upperLimit = this.validateInput("^[0-9]+$");
+                }else {
+                    System.out.println("Chose the value to be compared");
+                    parameter = this.validateInput("^[0-9]+$");
+                }
                 break;
 
             case "double":
                 System.out.println("Available operations for " + fields[choice - 1] + " :");
                 operation = this.getOperation();
-                System.out.println("Chose the value to be compared");
-                parameter = this.validateInput("([0-9]|\\.)+");
+                if(operation.equals("range")){
+                    System.out.println("Set the range's lower limit");
+                    lowerLimit = this.validateInput("^([0-9]|\\.)+$");
+                    System.out.println("Set the range's upper limit");
+                    upperLimit = this.validateInput("([0-9]|\\.)+");
+                }else {
+                    System.out.println("Chose the value to be compared");
+                    parameter = this.validateInput("^([0-9]|\\.)+$");
+                }
                 break;
 
             case "date":
                 System.out.println("Available operations for " + fields[choice - 1] + " :");
                 operation = this.getOperation();
-                System.out.println("Chose the value to be compared");
-                parameter = this.validateInput("^([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4}$");
+                if(operation.equals("range")) {
+                    System.out.println("Set the range's lower limit");
+                    lowerLimit = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4})$");
+                    System.out.println("Set the range's upper limit");
+                    upperLimit = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4})$");
+                }else {
+                    System.out.println("Chose the value to be compared");
+                    parameter = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4}$)");
+                }
                 break;
         }
-
-
-        return new Query(operation, parameter, choice - 1);
+        Query newQuery = null;
+        if(operation.equals("range")){
+            newQuery = new Query(operation, lowerLimit, choice - 1, upperLimit);
+        }else{
+            newQuery = new Query(operation, parameter, choice - 1);
+        }
+        return newQuery;
     }
 
     /**
@@ -128,7 +159,7 @@ public class UI {
         Query firstQuery = this.makeSimpleQuery();
         LogicalOperator logicalOperator = null;
         System.out.println("Select the logical operator to bind the queries\n1- And\n2- Or");
-        int operator = Integer.parseInt(this.validateInput("(^[1-2]${1})"));
+        int operator = Integer.parseInt(this.validateInput("^[1-2]$"));
         switch (operator) {
             case 1:
                 logicalOperator = LogicalOperator.AND;
@@ -149,8 +180,8 @@ public class UI {
 
     public String getOperation(){
         String operation = "";
-        System.out.println("1- Equals (=)\n2- Greater than (>)\n3- Lesser than (<)\n4- Greater of equal than (>=)\n5- Lesser or equal than (<=)");
-        int choice = Integer.parseInt(this.validateInput("(^[1-5]${1})"));
+        System.out.println("1- Equals (=)\n2- Greater than (>)\n3- Lesser than (<)\n4- Greater of equal than (>=)\n5- Lesser or equal than (<=)\n6- A range between two values");
+        int choice = Integer.parseInt(this.validateInput("(^[1-6]$)"));
         switch (choice) {
             case 1:
                 operation = "=";
@@ -166,6 +197,9 @@ public class UI {
                 break;
             case 5:
                 operation = "<=";
+                break;
+            case 6:
+                operation = "range";
                 break;
         }
         return operation;
