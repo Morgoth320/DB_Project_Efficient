@@ -2,13 +2,19 @@ import java.util.*;
 
 public class Table {
     private Map<String, String> keyMap;
-    private Map<String, TreeMap> indexes;
+    private Map<String, Map> indexes;
 
     public Table(){
         indexes = new HashMap<>();
         keyMap = new HashMap<>();
     }
 
+    /**
+     * Creates a new index for a Table column. First it puts the field name and it's class in the
+     * keyMap, and then it creates an entry for that field by mapping the field name to a new map
+     * @param fieldName name of the new field
+     * @param fieldClass object class of the values of the field
+     */
     public void createIndex(String fieldName, String fieldClass){
         keyMap.put(fieldName, fieldClass);
         switch(fieldClass){
@@ -30,36 +36,44 @@ public class Table {
         }
     }
 
+    /**
+     * Returns a list of Strings that contains all the entries associated to the value passed as parameter.
+     * It does so by getting first, a map associated with the field name, then, in that map, getting the list
+     * mapped to the value passed as parameter
+     * @param fieldName name of the field being queried
+     * @param value value that we're looking for in the table
+     * @return a list of Strings that contains all the entries associated to the value passed as parameter
+     */
     public List<String> getByIndex(String fieldName, Object value){
         List<String> toReturn = null;
         switch (keyMap.get(fieldName)){
             case "bool":
                 {
-                    TreeMap<Boolean, List<String>> map = indexes.get(fieldName);
+                    Map<Boolean, List<String>> map = indexes.get(fieldName);
                     toReturn = map.get(value);
                 }
                 break;
             case "String":
                 {
-                    TreeMap<String, List<String>> map = indexes.get(fieldName);
+                    Map<String, List<String>> map = indexes.get(fieldName);
                     toReturn = map.get(value);
                 }
                 break;
             case "int":
                 {
-                    TreeMap<Integer , List<String>> map = indexes.get(fieldName);
+                    Map<Integer , List<String>> map = indexes.get(fieldName);
                     toReturn = map.get(value);
                 }
                 break;
             case "double":
                 {
-                    TreeMap<Double , List<String>> map = indexes.get(fieldName);
+                    Map<Double , List<String>> map = indexes.get(fieldName);
                     toReturn = map.get(value);
                 }
                 break;
             case "date":
                 {
-                    TreeMap<Date, List<String>> map = indexes.get(fieldName);
+                    Map<Date, List<String>> map = indexes.get(fieldName);
                     toReturn = map.get(value);
                 }
                 break;
@@ -67,8 +81,17 @@ public class Table {
         return toReturn;
     }
 
+    /**
+     * Inserts an entry into the table. First the map associated to a field name is retrieved, then, if there
+     * already is one or more entries mapped to the value passed, then the list of them is obtained and then
+     * the new entry inserted in that list. If there aren't entries mapped to the value, it creates a new list
+     * mapped to the value and then the entry is inserted.
+     * @param fieldName name of the field that will contain the new entry
+     * @param key object mapped to the new entry
+     * @param value entry to insert in the table
+     */
     public void insertWithIndex(String fieldName, Object key, String value){
-        TreeMap map = indexes.get(fieldName);
+        Map map = indexes.get(fieldName);
         switch(keyMap.get(fieldName)){
             case "bool": {
                 if (map.get((boolean) key) == null)
@@ -113,37 +136,25 @@ public class Table {
             }
     }
 
+    /**
+     * Returns a set of all the values associated to a single field. Used to get all the values mapped to entries
+     * in order to do the less, greater, less or equal and greater or equal operations more efficiently, since with
+     * this only values that already exist are being iterated over
+     * @param fieldName name of the field
+     * @return a set of all the values associated to a single field
+     */
     public Set getKeys(String fieldName){
-        TreeMap map = indexes.get(fieldName);
+        Map map = indexes.get(fieldName);
         Set s = map.keySet();
         return s;
     }
 
+    /**
+     * Returns the map that associates the names of the fields to their classes. Used to get the names of the fields
+     * in order to display them to the user
+     * @return the map that associates the names of the fields to their classes
+     */
     public Map<String, String> getKeyMap(){
         return keyMap;
-    }
-
-    public static void main(String... args){
-        Table t = new Table();
-        t.createIndex("names", "String");
-        t.createIndex("single", "bool");
-        t.createIndex("salary", "double");
-        t.insertWithIndex("names", "Satan", "Info");
-        t.insertWithIndex("names", "Satan", "Other info");
-        t.insertWithIndex("names", "Satan", "Other second info");
-        t.insertWithIndex("names", "Satan", "Other third info");
-        t.insertWithIndex("single", true, "Is single");
-        t.insertWithIndex("single", true, "Is second single");
-        t.insertWithIndex("single", true, "Is third single");
-        t.insertWithIndex("single", true, "Is fourth single");
-        /*List<String> completeInfo = t.getByIndex("single", true);
-        for(int i = 0; i < completeInfo.size(); i++){
-            System.out.println(completeInfo.get(i));
-        }*/
-        Set<String> set = t.getKeys("names");
-        Iterator<String> it = set.iterator();
-        while(it.hasNext()){
-            System.out.println(it.next());
-        }
     }
 }

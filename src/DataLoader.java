@@ -23,6 +23,10 @@ public class DataLoader {
         }
     }
 
+    /**
+     * Returns a table that contains the data inside the user's file
+     * @return a table that contains the data inside the user's file
+     */
     public Table getDataWithTable(){
         Table data = new Table();
         String[][] tempData = new String[this.getRowNumber()][this.getColumnNumber()];
@@ -81,6 +85,10 @@ public class DataLoader {
         return data;
     }
 
+    /**
+     * Returns the number of data rows contained in the file
+     * @return the number of data rows contained in the file
+     */
     private int getRowNumber(){
         int rows = 0;
         try{
@@ -95,6 +103,11 @@ public class DataLoader {
         return rows;
     }
 
+    /**
+     * Returns the number of columns inside the user's file and sets the regex to separate them, since in some computers the
+     * csv is separated by a ';' and in others by a ','
+     * @return the number of data columns inside the user's file
+     */
     private int getColumnNumber(){
         int columns = 0;
         try{
@@ -112,14 +125,5 @@ public class DataLoader {
             e.printStackTrace();
         }
         return columns;
-    }
-
-    public static void main(String... args){
-        Table data = new DataLoader("TestFile.csv").getDataWithTable();
-        List<String> list = data.getByIndex("Single", false);
-        Set<Integer> set = data.getKeys("Age");
-        Iterator<Integer> it = set.iterator();
-        while(it.hasNext())
-            System.out.println(it.next());
     }
 }

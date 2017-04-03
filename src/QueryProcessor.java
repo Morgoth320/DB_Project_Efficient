@@ -75,8 +75,8 @@ public class QueryProcessor {
     }
 
     /**
-     * Generates the complex query's answer, using two simple queries and a logical operator
-     * @param query ComplexQuery Data Tyoe containing the user's requirements
+     * Generates the complex query's answer, using data equivalent to two simple queries and a logical operator
+     * @param query ComplexQuery Data Type containing the user's requirements
      * @return String with a complex query's answer
      */
     public String processComplexQuery(ComplexQuery query){
@@ -124,12 +124,20 @@ public class QueryProcessor {
         return finalResult;
     }
 
-    private String compareIntegers(String comparison, int toCompare, int column, int otherCompare){
+    /**
+     * Makes the query comparison when the operands are Integers
+     * @param operation operation to make the comparison with (=, <, >, >=, <=, range)
+     * @param toCompare value inserted by the user to make the comparison, if the comparison is a range this is the lower limit
+     * @param column column that holds the values to be compared with the user input
+     * @param upperLimit in the case that the comparison is a ranged, this is the upper limit
+     * @return a string with all the entries that matched the query
+     */
+    private String compareIntegers(String operation, int toCompare, int column, int upperLimit){
         String result = "";
         Set<Integer> keySet = dataTable.getKeys(fieldNames[column]);
         int currentKey = 0;
         Iterator<Integer> keyIterator = keySet.iterator();
-        switch (comparison){
+        switch (operation){
             case "=":
                 result = this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare));
                 break;
@@ -174,9 +182,9 @@ public class QueryProcessor {
                     currentKey = keyIterator.next();
 
                 result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
-                while (keyIterator.hasNext() && currentKey <= otherCompare) {
+                while (keyIterator.hasNext() && currentKey <= upperLimit) {
                     currentKey = keyIterator.next();
-                    if(currentKey <= otherCompare)
+                    if(currentKey <= upperLimit)
                         result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
                 }
             }
@@ -185,13 +193,21 @@ public class QueryProcessor {
         return result;
     }
 
-    private String compareDoubles(String comparison, double toCompare, int column, double otherCompare){
+    /**
+     * Makes the query comparison when the operands are Doubles
+     * @param operation operation to make the comparison with (=, <, >, >=, <=, range)
+     * @param toCompare value inserted by the user to make the comparison, if the comparison is a range this is the lower limit
+     * @param column column that holds the values to be compared with the user input
+     * @param upperLimit in the case that the comparison is a ranged, this is the upper limit
+     * @return a string with all the entries that matched the query
+     */
+    private String compareDoubles(String operation, double toCompare, int column, double upperLimit){
         String result = "";
         Set<Double> keySet = dataTable.getKeys(fieldNames[column]);
 
         Iterator<Double> keyIterator = keySet.iterator();
         double currentKey = 0;
-        switch (comparison){
+        switch (operation){
             case "=":
                 result = this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare));
                 break;
@@ -238,9 +254,9 @@ public class QueryProcessor {
                     currentKey = keyIterator.next();
 
                 result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
-                while (keyIterator.hasNext() && currentKey <= otherCompare) {
+                while (keyIterator.hasNext() && currentKey <= upperLimit) {
                     currentKey = keyIterator.next();
-                    if(currentKey <= otherCompare)
+                    if(currentKey <= upperLimit)
                         result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
                 }
             }
@@ -249,13 +265,21 @@ public class QueryProcessor {
         return result;
     }
 
-    private String compareDates(String comparison, Date toCompare, int column, Date otherCompare){
+    /**
+     * Makes the comparison when the operands are Dates
+     * @param operation operation to make the comparison with (=, <, >, >=, <=, range)
+     * @param toCompare value inserted by the user to make the comparison, if the comparison is a range this is the lower limit
+     * @param column column that holds the values to be compared with the user input
+     * @param upperLimit in the case that the comparison is a ranged, this is the upper limit
+     * @return a string with all the entries that matched the query
+     */
+    private String compareDates(String operation, Date toCompare, int column, Date upperLimit){
         String result = "";
         Set<Date> keySet = dataTable.getKeys(fieldNames[column]);
         Iterator<Date> keyIterator = keySet.iterator();
         Date currentDate = null;
 
-        switch (comparison){
+        switch (operation){
             case "=":
                 result = this.getResults(dataTable.getByIndex(fieldNames[column], toCompare));
                 break;
@@ -309,9 +333,9 @@ public class QueryProcessor {
                     currentDate = keyIterator.next();
 
                 result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
-                while (keyIterator.hasNext() && currentDate.compareTo(otherCompare) <= 0) {
+                while (keyIterator.hasNext() && currentDate.compareTo(upperLimit) <= 0) {
                     currentDate = keyIterator.next();
-                    if (currentDate.compareTo(otherCompare) <= 0)
+                    if (currentDate.compareTo(upperLimit) <= 0)
                         result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
 
                 }
@@ -321,14 +345,34 @@ public class QueryProcessor {
         return result;
     }
 
+    /**
+     * Makes the comparison when the operands are Strings, since the only available operation with Strings is
+     * equality, it only gets the ones that match the one inserted by the user
+     * @param toCompare value inserted by the user to make the comparison
+     * @param column column that holds the values to be compared with the user input
+     * @return a string with all the entries equal to the one inserted by the user
+     */
     private String compareStrings(String toCompare, int column){
         return this.getResults(dataTable.getByIndex(fieldNames[column], toCompare));
     }
 
+    /**
+     * Makes the comparison when the operands are booleans, since the only available operation with booleans is
+     * equality, it only gets the ones that match the one inserted by the user
+     * @param toCompare value inserted by the user to make the comparison
+     * @param column column that holds the values to be compared with the user input
+     * @return s String with all the entries equal to the one inserted by the user
+     */
     private String compareBooleans(boolean toCompare, int column){
         return this.getResults(dataTable.getByIndex(fieldNames[column], toCompare));
     }
 
+    /**
+     * Converts a list of Strings to a single String, used to display the results of the query
+     * to the user in the UI. If the list is null, then there were no matches
+     * @param results a list with the matches of a single query
+     * @return a single String containing the values inside the list
+     */
     private String getResults(List<String> results){
         String result = "";
         if(results != null) {
@@ -342,6 +386,10 @@ public class QueryProcessor {
         return result;
     }
 
+    /**
+     * Returns an array with the names of the fields inside the file, used to get them for display to the user
+     * @return an array with the names of the fields inside the file
+     */
     private String[] getFieldNames(){
         Set<String> fields = dataTable.getKeyMap().keySet();
         String[] returnFields = new String[fields.size()];
@@ -354,6 +402,10 @@ public class QueryProcessor {
         return  returnFields;
     }
 
+    /**
+     * Returns an array with the types of the fields inside the file, used to make castings to the user's input more easy
+     * @return an array with the names of the fields inside the file
+     */
     private String[] getTypeNames(){
         Set<Map.Entry<String, String>> fieldTypes = dataTable.getKeyMap().entrySet();
         String[] returnTypes = new String[fieldTypes.size()];

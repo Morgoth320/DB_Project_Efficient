@@ -11,6 +11,13 @@ public class Query {
         this.comparisonColumn = comparisonColumn;
     }
 
+    /**
+     * Special constructor to make the ranged query
+     * @param operation in this constructor its always range
+     * @param lowerLimit user defined range's lower limit
+     * @param comparisonColumn column that contains the value to be compared
+     * @param upperLimit user defined range's upper limit
+     */
     public Query(String operation, String lowerLimit, int comparisonColumn, String upperLimit){
         this.operation = operation;
         this.lowerLimit = lowerLimit;
