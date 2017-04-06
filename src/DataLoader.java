@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 public class DataLoader {
+    private final String DATE_FORMAT = "dd/mm/yyyy";
+    private final String GRINGO_DATE_FORMAT = "mm/dd/yyyy";
     private String path;
     private String regex;
     private BufferedReader reader;
@@ -15,7 +17,7 @@ public class DataLoader {
 
     public DataLoader(String path){
         this.path = path;
-        format = new SimpleDateFormat("dd/MM/yyyy");
+        format = new SimpleDateFormat(GRINGO_DATE_FORMAT);
         try{
             reader = new BufferedReader(new FileReader(path));
         }catch(Exception e){

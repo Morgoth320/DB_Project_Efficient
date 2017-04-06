@@ -3,6 +3,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UI {
+    private final String DATE_REGEX = "^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4})$";
+    private final String GRINGO_DATE_REGEX = "^([1-9]|1[0-2])/(([1-9]|1[0-9]|2[0-9]|3[0-1])/[0-9]{4})$";
     private QueryProcessor queryProcessor;
     private String[] fields;
     private String[] types;
@@ -84,7 +86,7 @@ public class UI {
                 System.out.println("The only available operation for " + fields[choice - 1] + " is equality");
                 operation = "=";
                 System.out.println("Chose the value to be compared");
-                parameter = this.validateInput(".*");
+                parameter = this.validateInput("[A-Za-z]");
                 break;
 
             case "bool":
@@ -127,12 +129,12 @@ public class UI {
                 operation = this.getOperation();
                 if(operation.equals("range")) {
                     System.out.println("Set the range's lower limit");
-                    lowerLimit = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4})$");
+                    lowerLimit = this.validateInput(GRINGO_DATE_REGEX);
                     System.out.println("Set the range's upper limit");
-                    upperLimit = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4})$");
+                    upperLimit = this.validateInput(GRINGO_DATE_REGEX);
                 }else {
                     System.out.println("Chose the value to be compared");
-                    parameter = this.validateInput("^(([1-9]|1[0-9]|2[0-9]|3[0-1])/([1-9]|1[0-2])/[0-9]{4}$)");
+                    parameter = this.validateInput(GRINGO_DATE_REGEX);
                 }
                 break;
         }

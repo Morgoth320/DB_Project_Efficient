@@ -2,6 +2,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class QueryProcessor {
+    private final String DATE_FORMAT = "dd/mm/yyyy";
+    private final String GRINGO_DATE_FORMAT = "mm/dd/yyyy";
     private Table dataTable;
     private String[] fieldNames;
     private String[] typeNames;
@@ -11,7 +13,7 @@ public class QueryProcessor {
     public QueryProcessor(String path){
         DataLoader dataLoader = new DataLoader(path);
         this.dataTable = dataLoader.getDataWithTable();
-        this.format = new SimpleDateFormat("dd/MM/yyyy");
+        this.format = new SimpleDateFormat(GRINGO_DATE_FORMAT);
         this.fieldNames = this.getFieldNames();
         this.typeNames = this.getTypeNames();
     }
