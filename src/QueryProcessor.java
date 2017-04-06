@@ -83,10 +83,8 @@ public class QueryProcessor {
      */
     public String processComplexQuery(ComplexQuery query){
         String finalResult = "";
-        String firstResult = "";
-        String secondResult = "";
-        firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getLowerLimit(), query.getUpperLimit());
-        secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
+        String firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue(), "");
+        String secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
         String[] firstResultValues = firstResult.split("\n");
         String[] secondResultValues = secondResult.split("\n");
         if(firstResult.equals("No matches were found") && secondResult.equals("No matches were found")) {
@@ -104,6 +102,8 @@ public class QueryProcessor {
                                 }
                             }
                         }
+                        if(finalResult.equals(""))
+                            finalResult = "No matches were found";
                     }
                     break;
                 case OR:
