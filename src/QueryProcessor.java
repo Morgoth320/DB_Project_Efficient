@@ -152,7 +152,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-                break;
+            break;
             case "<":{
                 while(keyIterator.hasNext() && currentKey < toCompare){
                     currentKey = keyIterator.next();
@@ -160,7 +160,7 @@ public class QueryProcessor {
                         result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
-                break;
+            break;
             case ">=": {
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
@@ -170,7 +170,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-                break;
+            break;
             case "<=":{
                 while(keyIterator.hasNext() && currentKey <= toCompare){
                     currentKey = keyIterator.next();
@@ -178,7 +178,7 @@ public class QueryProcessor {
                         result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
-                break;
+            break;
             case "range":{
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
@@ -222,8 +222,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-
-                break;
+            break;
             case "<":{
                 while(keyIterator.hasNext() && currentKey < toCompare){
                     currentKey = keyIterator.next();
@@ -231,7 +230,7 @@ public class QueryProcessor {
                         result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
-                break;
+            break;
             case ">=":{
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
@@ -241,7 +240,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-                break;
+            break;
             case "<=":{
                 while(keyIterator.hasNext() && currentKey <= toCompare){
                     currentKey = keyIterator.next();
@@ -249,7 +248,7 @@ public class QueryProcessor {
                         result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
-                break;
+            break;
 
             case "range":{
                 while (keyIterator.hasNext() && currentKey < toCompare)
@@ -296,7 +295,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-                break;
+            break;
             case "<":{
                 currentDate = keyIterator.next();
                 while (keyIterator.hasNext() && currentDate.compareTo(toCompare) < 0){
@@ -306,7 +305,7 @@ public class QueryProcessor {
 
                 }
             }
-                break;
+            break;
             case ">=": {
                 currentDate = keyIterator.next();
                 while(keyIterator.hasNext() && currentDate.compareTo(toCompare) < 0)
@@ -317,7 +316,7 @@ public class QueryProcessor {
                     result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
-                break;
+            break;
             case "<=": {
                 currentDate = keyIterator.next();
                 while (keyIterator.hasNext() && currentDate.compareTo(toCompare) <= 0) {
@@ -327,7 +326,7 @@ public class QueryProcessor {
 
                 }
             }
-                break;
+            break;
 
             case "range":{
                 currentDate = keyIterator.next();
