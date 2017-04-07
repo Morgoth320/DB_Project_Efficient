@@ -82,48 +82,48 @@ public class QueryProcessor {
      * @return String with a complex query's answer
      */
     public String processComplexQuery(ComplexQuery query){
-        String finalResult = "";
+        StringBuilder finalResult = new StringBuilder();
         String firstResult = this.processSimpleQuery(query.getComparisonColumn(), query.getOperation(), query.getOperationValue(), "");
         String secondResult = this.processSimpleQuery(query.getSecondComparisonColumn(), query.getSecondOperation(), query.getSecondOperationValue(), "");
         String[] firstResultValues = firstResult.split("\n");
         String[] secondResultValues = secondResult.split("\n");
         if(firstResult.equals("No matches were found") && secondResult.equals("No matches were found")) {
-            finalResult = firstResult;
+            finalResult.append(firstResult);
         }else {
             switch (query.getLogicalOperator()) {
                 case AND:
                     if(firstResult.equals("No matches were found") || secondResult.equals("No matches were found")) {
-                        finalResult = "No matches were found";
+                        finalResult.append("No matches were found");
                     }else {
                         for (int i = 0; i < firstResultValues.length; ++i) {
                             for (int j = 0; j < secondResultValues.length; ++j) {
-                                if (firstResultValues[i].equals(secondResultValues[j]) && !finalResult.contains(firstResultValues[i])) {
-                                    finalResult += firstResultValues[i] + "\n";
+                                if (firstResultValues[i].equals(secondResultValues[j]) && !finalResult.toString().contains(firstResultValues[i])) {
+                                    finalResult.append(firstResultValues[i] + "\n");
                                 }
                             }
                         }
                         if(finalResult.equals(""))
-                            finalResult = "No matches were found";
+                            finalResult.append("No matches were found");
                     }
                     break;
                 case OR:
                     if(!firstResult.equals("No matches were found")) {
                         for (int i = 0; i < firstResultValues.length; ++i) {
-                            finalResult += firstResultValues[i] + "\n";
+                            finalResult.append(firstResultValues[i] + "\n");
                         }
                     }
 
                     if(!secondResult.equals("No matches were found")) {
                         for (int j = 0; j < secondResultValues.length; ++j) {
-                            if (!finalResult.contains(secondResultValues[j])) {
-                                finalResult += secondResultValues[j] + "\n";
+                            if (!finalResult.toString().contains(secondResultValues[j])) {
+                                finalResult.append(secondResultValues[j] + "\n");
                             }
                         }
                     }
                     break;
             }
         }
-        return finalResult;
+        return finalResult.toString();
     }
 
     /**
@@ -135,21 +135,21 @@ public class QueryProcessor {
      * @return a string with all the entries that matched the query
      */
     private String compareIntegers(String operation, int toCompare, int column, int upperLimit){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Set<Integer> keySet = dataTable.getKeys(fieldNames[column]);
         int currentKey = 0;
         Iterator<Integer> keyIterator = keySet.iterator();
         switch (operation){
             case "=":
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare)));
                 break;
             case ">": {
                 while (keyIterator.hasNext() && currentKey <= toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext()) {
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
                 break;
@@ -157,7 +157,7 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentKey < toCompare){
                     currentKey = keyIterator.next();
                     if(currentKey < toCompare)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
                 break;
@@ -165,9 +165,9 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext()) {
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
                 break;
@@ -175,7 +175,7 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentKey <= toCompare){
                     currentKey = keyIterator.next();
                     if(currentKey <= toCompare)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
                 break;
@@ -183,16 +183,16 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext() && currentKey <= upperLimit) {
                     currentKey = keyIterator.next();
                     if(currentKey <= upperLimit)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
             break;
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -204,22 +204,22 @@ public class QueryProcessor {
      * @return a string with all the entries that matched the query
      */
     private String compareDoubles(String operation, double toCompare, int column, double upperLimit){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Set<Double> keySet = dataTable.getKeys(fieldNames[column]);
 
         Iterator<Double> keyIterator = keySet.iterator();
         double currentKey = 0;
         switch (operation){
             case "=":
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], toCompare)));
                 break;
             case ">":{
                 while (keyIterator.hasNext() && currentKey <= toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext()) {
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
 
@@ -228,7 +228,7 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentKey < toCompare){
                     currentKey = keyIterator.next();
                     if(currentKey < toCompare)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
                 break;
@@ -236,9 +236,9 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext()) {
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
                 break;
@@ -246,7 +246,7 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentKey <= toCompare){
                     currentKey = keyIterator.next();
                     if(currentKey <= toCompare)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
                 break;
@@ -255,16 +255,16 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentKey < toCompare)
                     currentKey = keyIterator.next();
 
-                result = this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 while (keyIterator.hasNext() && currentKey <= upperLimit) {
                     currentKey = keyIterator.next();
                     if(currentKey <= upperLimit)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentKey)));
                 }
             }
             break;
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -276,14 +276,14 @@ public class QueryProcessor {
      * @return a string with all the entries that matched the query
      */
     private String compareDates(String operation, Date toCompare, int column, Date upperLimit){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Set<Date> keySet = dataTable.getKeys(fieldNames[column]);
         Iterator<Date> keyIterator = keySet.iterator();
         Date currentDate = null;
 
         switch (operation){
             case "=":
-                result = this.getResults(dataTable.getByIndex(fieldNames[column], toCompare));
+                result.append(this.getResults(dataTable.getByIndex(fieldNames[column], toCompare)));
                 break;
             case ">": {
                 currentDate = keyIterator.next();
@@ -291,9 +291,9 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentDate.compareTo(toCompare) <= 0)
                     currentDate = keyIterator.next();
 
-                result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
                 while(keyIterator.hasNext()){
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
                 break;
@@ -302,7 +302,7 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentDate.compareTo(toCompare) < 0){
                     currentDate = keyIterator.next();
                     if(currentDate.compareTo(toCompare) < 0)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
 
                 }
             }
@@ -312,9 +312,9 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentDate.compareTo(toCompare) < 0)
                     currentDate = keyIterator.next();
 
-                result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
                 while(keyIterator.hasNext()){
-                    result += this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next()));
+                    result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], keyIterator.next())));
                 }
             }
                 break;
@@ -323,7 +323,7 @@ public class QueryProcessor {
                 while (keyIterator.hasNext() && currentDate.compareTo(toCompare) <= 0) {
                     currentDate = keyIterator.next();
                     if (currentDate.compareTo(toCompare) <= 0)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
 
                 }
             }
@@ -334,17 +334,17 @@ public class QueryProcessor {
                 while(keyIterator.hasNext() && currentDate.compareTo(toCompare) < 0)
                     currentDate = keyIterator.next();
 
-                result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
                 while (keyIterator.hasNext() && currentDate.compareTo(upperLimit) <= 0) {
                     currentDate = keyIterator.next();
                     if (currentDate.compareTo(upperLimit) <= 0)
-                        result += this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate));
+                        result.append(this.getResults(dataTable.getByIndex(this.fieldNames[column], currentDate)));
 
                 }
             }
             break;
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -376,16 +376,16 @@ public class QueryProcessor {
      * @return a single String containing the values inside the list
      */
     private String getResults(List<String> results){
-        String result = "";
+        StringBuilder sb = new StringBuilder();
         if(results != null) {
             for (int i = 0; i < results.size(); i++)
-                result += results.get(i) + "\n";
+                sb.append(results.get(i) + "\n");
 
         }else
-            result = "No matches were found";
+            sb.append("No matches were found");
 
 
-        return result;
+        return sb.toString();
     }
 
     /**
